@@ -17,6 +17,7 @@
         },
         "files": [
             "luc/idgen.php",
+            "luc/base.php",
             "fun.php"
         ]
     },
