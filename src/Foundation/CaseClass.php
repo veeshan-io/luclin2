@@ -2,12 +2,26 @@
 
 namespace Luclin2\Foundation;
 
-/**
-$case->name 可以取到名字
-$case->value 可以取到值
-$case() 可以执行或取到值
- */
 class CaseClass
 {
+    public string $symbol;
 
+    private $value = null;
+    private $func;
+
+    public function __construct(string $symbol, $value = null,
+        ?callable $func = null)
+    {
+        $this->symbol   = $symbol;
+        $value  && $this->value = $value;
+        $func   && $this->func  = $func;
+    }
+
+    public function __invoke(...$params) {
+        if ($this->func) {
+            $func = $this->func;
+            return $func($this->value, ...$params);
+        }
+        return $this->value;
+    }
 }

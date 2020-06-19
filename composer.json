@@ -25,7 +25,10 @@
             "providers": [
                 "Luclin2\\Laravel\\Providers\\AppServiceProvider",
                 "Luclin2\\Laravel\\Providers\\DatabaseServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Dock": "Luclin2\\Foundation\\Dock"
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ function gid(int $now = 0, string $shard = '000',
     // 获取微秒时间戳
     !$now && $now = microtime(true);
     // 减去偏移量并精确到100微秒
-    $now = ($now - 1580000000) * 10000;
+    $now = ($now - 1590000000) * 10000;
     // 生成16进制时间戳
     $stamp = str_pad(dechex($now), 12, '0', \STR_PAD_LEFT);
     // 生成16进制随机数
