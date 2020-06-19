@@ -17,6 +17,10 @@ class CaseClass
         $func   && $this->func  = $func;
     }
 
+    public function is(string $symbol): bool {
+        return $this->symbol == $symbol;
+    }
+
     public function __invoke(...$params) {
         if ($this->func) {
             $func = $this->func;

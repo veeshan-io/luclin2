@@ -20,6 +20,13 @@ function match(callable $func = null): callable {
     return fn() => 1;
 }
 
+function take(iterable $funcs, $value, ...$params) {
+    foreach ($funcs as $func) {
+        $value = $func($value, ...$params);
+    }
+    return $value;
+}
+
 function implicit() {
 
 }
