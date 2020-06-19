@@ -1,0 +1,31 @@
+{
+    "name": "veeshan/luclin2",
+    "description": "luclin2",
+    "keywords": ["framework", "laravel", "luclin"],
+    "type": "framework",
+    "license": "LGPL-3.0-only",
+    "authors": [{
+        "name": "Andares Merigold",
+        "email": "andares@outlook.com"
+    }],
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Luclin2\\": "src/"
+        },
+        "files": [
+            "luc/*.php",
+            "fun.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Luclin2\\Laravel\\Providers\\AppServiceProvider",
+                "Luclin2\\Laravel\\Providers\\DatabaseServiceProvider"
+            ]
+        }
+    }
+}
