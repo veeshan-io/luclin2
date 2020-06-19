@@ -16,7 +16,7 @@
             "Luclin2\\": "src/"
         },
         "files": [
-            "luc/*.php",
+            "luc/idgen.php",
             "fun.php"
         ]
     },
