@@ -35,6 +35,12 @@ class CaseClass
         return $implicit($method, $this, $arguments);
     }
 
+    public function __get(string $method): ?callable {
+        $funcs = Implicit::method($this->symbol, $method);
+        if (!$funcs) return null;
+        return fn(...$params) => take($funcs, $this, $params);
+    }
+
     public function __toString()
     {
         $name = ":$this->symbol";

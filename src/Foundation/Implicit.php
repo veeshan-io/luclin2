@@ -30,4 +30,8 @@ class Implicit
 
         throw new \OutOfBoundsException('bound case method is not exist');
     }
+
+    public static function method(string $symbol, string $method): ?array {
+        return Dock::instance('implicit')->$symbol($method);
+    }
 }
