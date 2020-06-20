@@ -113,6 +113,6 @@ function result(iterable $iterator, bool $autoUnpack = true): array {
  * @param mixed[] ...$params
  * @return Foundation\Currying
  */
-function looking(callable $func, ...$params): Foundation\Currying {
-    return new Foundation\Currying();
+function into(callable $func, ...$params): Foundation\Currying {
+    return new Foundation\Currying($func, $params);
 }

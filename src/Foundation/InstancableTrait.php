@@ -6,9 +6,9 @@ trait InstancableTrait
 {
     protected static array $instances = [];
 
-    public static function instance($name = '_', ...$arguments) {
+    public static function instance($name = '_', ...$params) {
         return static::$instances[$name] ??
-            (static::$instances[$name] = new static(...$arguments));
+            (static::$instances[$name] = new static(...$params));
     }
 
     public static function instances(): iterable {

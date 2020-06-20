@@ -35,4 +35,14 @@ class CaseClass
         return $implicit($method, $this, $arguments);
     }
 
+    public function __toString()
+    {
+        $name = ":$this->symbol";
+        if ($this->value === null) {
+            return $name;
+        }
+        $value = $this();
+        return $name."($value)";
+    }
+
 }
