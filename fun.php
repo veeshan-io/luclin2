@@ -5,15 +5,34 @@ use Luclin2\Foundation;
 /**
  * Create CaseClass object
  *
- * @param string $symbol
+ * @param string | Foundation\CaseClass $type
  * @param mixed $value
  * @param callable $func
  * @return Foundation\CaseClass
  */
-function casing(string $symbol, $value = null,
+function casing($type, $value = null,
     callable $func = null): Foundation\CaseClass
 {
-    return new Foundation\CaseClass($symbol, $value, $func);
+    if (is_string($type) && $type[0] == ':') return Foundation\CaseClass::by($type);
+    return new Foundation\CaseClass($type, $value, $func);
+}
+
+/**
+ * 获取raw case的case type
+ *
+ * @param mixed $var
+ * @return string|null
+ */
+function casetype($var): ?string
+{
+    if (is_string($var))    return "string";
+    if (is_numeric($var))   return "numeric";
+    if (is_bool($var))      return "boolean";
+    if (is_null($var))      return "null";
+    if (is_iterable($var))  return "iterable";
+    if (is_resource($var))  return "resource";
+    if (is_object($var))    return "instance";
+    return null;
 }
 
 /**
@@ -23,7 +42,7 @@ function casing(string $symbol, $value = null,
  * @return Foundation\CaseClass
  */
 function raw($value): Foundation\CaseClass {
-    return new Foundation\CaseClass(\luc\type($value), $value);
+    return new Foundation\CaseClass(casetype($value), $value);
 }
 
 /**
@@ -44,7 +63,9 @@ function match(iterable $context = []): Foundation\Match {
  * @param array $params
  * @return void
  */
-function take(iterable $funcs, $value, array $params) {
+function take(?iterable $funcs, $value, array $params = []) {
+    if (!$funcs) return $value;
+
     foreach ($funcs as $func) {
         $value = $func($value, ...$params);
     }
@@ -54,27 +75,27 @@ function take(iterable $funcs, $value, array $params) {
 /**
  * 隐式注入Case method
  *
- * @param string $symbol
+ * @param string $type
  * @return Foundation\Implicit
  */
-function implicit(string $symbol): Foundation\Implicit {
-    return new Foundation\Implicit($symbol);
+function implicit(string $type): Foundation\Implicit {
+    return new Foundation\Implicit($type);
 }
 
 /**
  * 构造一个迭代器将一个iterable中的每个单元作为指定case处理
  *
- * @param string $symbol
+ * @param string $type
  * @param iterable $items
  * @param callable $func
  * @return iterable
  */
-function thought(string $symbol, callable $func = null): callable {
-    return (function($items) use ($symbol, $func) {
+function thought(string $type, callable $func = null): callable {
+    return (function($items) use ($type, $func) {
         $result = [];
         $items instanceof Foundation\CaseClass && $items = $items();
         foreach ($items as $key => $item) {
-            $result = yield $key => casing($symbol, $item, $func);
+            $result = yield $key => casing($type, $item, $func);
         }
         return $result;
     });

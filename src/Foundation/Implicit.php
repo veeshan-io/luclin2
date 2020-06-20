@@ -4,11 +4,11 @@ namespace Luclin2\Foundation;
 
 class Implicit
 {
-    private string $symbol;
+    private string $type;
 
-    public function __construct(string $symbol)
+    public function __construct(string $type)
     {
-        $this->symbol = $symbol;
+        $this->type = $type;
     }
 
     public function __call(string $method, array $funcs): self
@@ -18,20 +18,20 @@ class Implicit
             $functor  = $funcs[0];
             $funcs[0] = fn(...$params) => $functor(...$params);
         }
-        Dock::instance('implicit')->{$this->symbol}($method, $funcs);
+        Dock::instance('implicit')->{$this->type}($method, $funcs);
         return $this;
     }
 
     public function __invoke(string $method, $case, array $params) {
         $dock   = Dock::instance('implicit');
-        $funcs  = $dock->{$this->symbol}($method);
+        $funcs  = $dock->{$this->type}($method);
         if ($funcs) return take($funcs, $case, $params);
-        elseif ($funcs = $dock->{$this->symbol}('_')) return take($funcs, $case, $params);
+        elseif ($funcs = $dock->{$this->type}('_')) return take($funcs, $case, $params);
 
         throw new \OutOfBoundsException('bound case method is not exist');
     }
 
-    public static function method(string $symbol, string $method): ?array {
-        return Dock::instance('implicit')->$symbol($method);
+    public static function method(string $type, string $method): ?array {
+        return Dock::instance('implicit')->$type($method);
     }
 }

@@ -13,10 +13,10 @@ class Match
         $this->context  = $context;
     }
 
-    public function __call(string $symbol, array $funcs): self
+    public function __call(string $type, array $funcs): self
     {
-        if ($symbol != '_') {
-            $this->cases[$symbol] = $funcs;
+        if ($type != '_') {
+            $this->cases[$type] = $funcs;
         } else {
             $this->close = $funcs;
         }
@@ -27,8 +27,8 @@ class Match
         $params[] = $this->context;
 
         $run = function(callable $test) use ($case, $params) {
-            foreach ($this->cases as $symbol => $funcs) {
-                if ($test($symbol)) return take($funcs, $case, $params);
+            foreach ($this->cases as $type => $funcs) {
+                if ($test($type)) return take($funcs, $case, $params);
             }
 
             if ($this->close) return take($this->close, $case, $params);
@@ -37,10 +37,10 @@ class Match
         };
 
         if ($case instanceof CaseClass) {
-            $test = fn($symbol) => $case->is($symbol);
+            $test = fn($type) => $case->is($type);
         } else {
-            $type = \luc\type($case);
-            $test = fn($symbol) => $type == $symbol;
+            $type = casetype($case) ?: 'nothing';
+            $test = fn($type) => $type == $type;
         }
         return $run($test);
     }
