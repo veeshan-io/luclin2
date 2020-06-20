@@ -1,5 +1,7 @@
 # Luclin2
 
+[Learn More](https://luclin.veeshan.io/)
+
 ## 介绍
 
 Luclin2作为一个PHP基础库，提供了以下功能：
