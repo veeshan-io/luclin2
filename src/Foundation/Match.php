@@ -28,14 +28,11 @@ class Match
 
         $run = function(callable $test) use ($case, $params) {
             foreach ($this->cases as $symbol => $funcs) {
-                if ($test($symbol)) {
-                    return take($funcs, $case, ...$params);
-                }
+                if ($test($symbol)) return take($funcs, $case, $params);
             }
 
-            if ($this->close) {
-                return take($this->close, $case, ...$params);
-            }
+            if ($this->close) return take($this->close, $case, $params);
+
             throw new \UnexpectedValueException("case match failed");
         };
 

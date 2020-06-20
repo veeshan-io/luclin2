@@ -4,20 +4,22 @@ namespace Luclin2\Foundation;
 
 class Dock
 {
-    private static array $data = [];
+    use InstancableTrait;
 
-    public static function __callStatic(string $name, array $arguments)
+    private array $storage = [];
+
+    public function __call(string $name, array $arguments)
     {
         $key = array_shift($arguments);
         if (!$arguments) {
-            return static::$data[$name][$key] ?? null;
+            return $this->storage[$name][$key] ?? null;
         }
 
         if ($arguments[0] === null) {
-            unset(static::$data[$name][$key]);
+            unset($this->storage[$name][$key]);
             return null;
         }
 
-        return static::$data[$name][$key] = $arguments[0];
+        return $this->storage[$name][$key] = $arguments[0];
     }
 }

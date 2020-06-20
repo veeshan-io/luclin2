@@ -28,4 +28,11 @@ class CaseClass
         }
         return $this->value;
     }
+
+    public function __call(string $method, array $arguments)
+    {
+        $implicit = new Implicit($this->symbol);
+        return $implicit($method, $arguments);
+    }
+
 }
