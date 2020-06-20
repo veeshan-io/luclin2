@@ -51,13 +51,59 @@ function take(iterable $funcs, $value, array $params) {
     return $value;
 }
 
+/**
+ * 隐式注入Case method
+ *
+ * @param string $symbol
+ * @return Foundation\Implicit
+ */
 function implicit(string $symbol): Foundation\Implicit {
     return new Foundation\Implicit($symbol);
 }
 
-// 把一个迭代器构造为case wrap迭代器
-function thought(string $symbol, iterable $items) {
+/**
+ * 构造一个迭代器将一个iterable中的每个单元作为指定case处理
+ *
+ * @param string $symbol
+ * @param iterable $items
+ * @param callable $func
+ * @return iterable
+ */
+function thought(string $symbol, callable $func = null): callable {
+    return (function($items) use ($symbol, $func) {
+        $result = [];
+        $items instanceof Foundation\CaseClass && $items = $items();
+        foreach ($items as $key => $item) {
+            $result = yield $key => casing($symbol, $item, $func);
+        }
+        return $result;
+    });
+}
 
+/**
+ * 构造Functor
+ *
+ * @param callable $func 处理函数
+ * @param callable $handler 解析方法
+ * @return Foundation\Functor
+ */
+function functor(callable $func, callable $handler = null): Foundation\Functor {
+    return new Foundation\Functor($func, $handler);
+}
+
+/**
+ * 收取迭代器的结果
+ *
+ * @param iterable $iterator
+ * @return array
+ */
+function result(iterable $iterator, bool $autoUnpack = true): array {
+    $result = [];
+    foreach ($iterator as $key => $item) {
+        $result[$key] = $autoUnpack ?
+            ($item instanceof Foundation\CaseClass ? $item() : $item) : $item;
+    }
+    return $result;
 }
 
 /**
@@ -69,9 +115,4 @@ function thought(string $symbol, iterable $items) {
  */
 function looking(callable $func, ...$params): Foundation\Currying {
     return new Foundation\Currying();
-}
-
-
-function functor() {
-
 }

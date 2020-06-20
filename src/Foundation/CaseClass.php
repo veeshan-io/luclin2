@@ -32,7 +32,7 @@ class CaseClass
     public function __call(string $method, array $arguments)
     {
         $implicit = new Implicit($this->symbol);
-        return $implicit($method, $arguments);
+        return $implicit($method, $this, $arguments);
     }
 
 }
