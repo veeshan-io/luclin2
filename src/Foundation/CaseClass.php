@@ -18,7 +18,7 @@ class CaseClass
             $this->func     = $type->func;
         } else {
             $this->type   = $type;
-            $value  && $this->value = $value;
+            $value  && $this->value = $value instanceof self ? $value() : $value;
             $func   && $this->func  = $func;
         }
     }
@@ -56,8 +56,7 @@ class CaseClass
 
     public function __call(string $method, array $arguments)
     {
-        $implicit = new Implicit($this->type);
-        return $implicit($method, $this, $arguments);
+        return Implicit::call($method, $this, $arguments);
     }
 
     public function __get(string $method): ?callable {

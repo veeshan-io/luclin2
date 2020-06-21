@@ -22,13 +22,13 @@ class Implicit
         return $this;
     }
 
-    public function __invoke(string $method, $case, array $params) {
+    public static function call(string $method, $case, array $params) {
         $dock   = Dock::instance('implicit');
-        $funcs  = $dock->{$this->type}($method);
+        $funcs  = $dock->{$case->type}($method);
         if ($funcs) return take($funcs, $case, $params);
-        elseif ($funcs = $dock->{$this->type}('_')) return take($funcs, $case, $params);
+        elseif ($funcs = $dock->{$case->type}('_')) return take($funcs, $case, [$method, ...$params]);
 
-        throw new \OutOfBoundsException('bound case method is not exist');
+        throw new \OutOfBoundsException("Bound case method :{$case->type}->$method() is not exist");
     }
 
     public static function method(string $type, string $method): ?array {

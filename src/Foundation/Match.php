@@ -33,7 +33,7 @@ class Match
 
             if ($this->close) return take($this->close, $case, $params);
 
-            throw new \UnexpectedValueException("case match failed");
+            throw new \UnexpectedValueException("Case match failed");
         };
 
         if ($case instanceof CaseClass) {
