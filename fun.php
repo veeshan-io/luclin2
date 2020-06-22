@@ -25,6 +25,8 @@ function casing($type, $value = null,
  */
 function casetype($var): ?string
 {
+    if ($var instanceof Foundation\CaseClass)
+        return $var->type;
     if (is_string($var))    return "string";
     if (is_numeric($var))   return "numeric";
     if (is_bool($var))      return "boolean";
@@ -42,7 +44,16 @@ function casetype($var): ?string
  * @return Foundation\CaseClass
  */
 function raw($value): Foundation\CaseClass {
-    return new Foundation\CaseClass(casetype($value), $value);
+    $type = casetype($value);
+
+    // dd($value);
+    if ($value instanceof Foundation\CaseClass) {
+        $func  = $value->fun();
+        $value = $value();
+    } else {
+        $func  = null;
+    }
+    return new Foundation\CaseClass($type, $value, $func);
 }
 
 /**

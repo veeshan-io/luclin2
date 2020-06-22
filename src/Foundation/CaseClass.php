@@ -6,20 +6,20 @@ class CaseClass
 {
     public string $type;
 
-    private $value = null;
-    private $func;
+    private $value  = null;
+    private $func   = null;
 
     public function __construct($type, $value = null,
         ?callable $func = null)
     {
         if ($type instanceof self) {
             $this->type     = $type->type;
-            $this->value    = $type();
+            $this->value    = $value === null ? $type() : $value;
             $this->func     = $type->func;
         } else {
             $this->type   = $type;
-            $value  && $this->value = $value instanceof self ? $value() : $value;
-            $func   && $this->func  = $func;
+            $value !== null && $this->value = $value;
+            $func  && $this->func  = $func;
         }
     }
 
@@ -42,16 +42,18 @@ class CaseClass
         return new self($type, $value);
     }
 
-    public function is(string $type): bool {
-        return $this->type == $type;
+    public function fun(): ?callable {
+        return $this->func;
     }
 
     public function __invoke(...$params) {
+        $value = $this->value;
+        $value instanceof self && $value = $value();
         if ($this->func) {
-            $func = $this->func;
-            return $func($this->value, ...$params);
+            $func   = $this->func;
+            return $func($value, ...$params);
         }
-        return $this->value;
+        return $value;
     }
 
     public function __call(string $method, array $arguments)

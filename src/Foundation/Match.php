@@ -6,7 +6,6 @@ class Match
 {
     private iterable $context;
     private array $cases = [];
-    private array $close = [];
 
     public function __construct(iterable $context = [])
     {
@@ -15,33 +14,17 @@ class Match
 
     public function __call(string $type, array $funcs): self
     {
-        if ($type != '_') {
-            $this->cases[$type] = $funcs;
-        } else {
-            $this->close = $funcs;
-        }
+        $this->cases[$type] = $funcs;
         return $this;
     }
 
     public function __invoke($case, ...$params) {
         $params[] = $this->context;
 
-        $run = function(callable $test) use ($case, $params) {
-            foreach ($this->cases as $type => $funcs) {
-                if ($test($type)) return take($funcs, $case, $params);
-            }
+        $type = casetype($case);
+        if ($funcs = $this->cases[$type] ?? null) return take($funcs, $case, $params);
+        elseif ($funcs = $this->cases['_'] ?? null) return take($funcs, $case, $params);
 
-            if ($this->close) return take($this->close, $case, $params);
-
-            throw new \UnexpectedValueException("Case match failed");
-        };
-
-        if ($case instanceof CaseClass) {
-            $test = fn($type) => $case->is($type);
-        } else {
-            $type = casetype($case) ?: 'nothing';
-            $test = fn($type) => $type == $type;
-        }
-        return $run($test);
+        throw new \UnexpectedValueException("Case $type match failed");
     }
 }
