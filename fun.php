@@ -21,10 +21,14 @@ function casing($type, $value = null,
  * 获取raw case的case type
  *
  * @param mixed $var
- * @return string|null
+ * @return string|null|boolean
  */
-function casetype($var): ?string
+function casetype($var, $other = null)
 {
+    if ($other !== null) {
+        return casetype($var) === casetype($other);
+    }
+
     if ($var instanceof Foundation\CaseClass)
         return $var->type;
     if (is_string($var))    return "string";
