@@ -21,7 +21,7 @@ class Match
     public function __invoke($case, ...$params) {
         $params[] = $this->context;
 
-        $type = casetype($case);
+        $type = casetype($case) ?: 'unknown';
         if ($funcs = $this->cases[$type] ?? null) return take($funcs, $case, $params);
         elseif ($funcs = $this->cases['_'] ?? null) return take($funcs, $case, $params);
 
