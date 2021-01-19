@@ -8,8 +8,14 @@
         "name": "Andares Merigold",
         "email": "andares@outlook.com"
     }],
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    },
     "require": {
-        "php": "^7.4"
+        "php": "^8.0"
     },
     "autoload": {
         "psr-4": {
