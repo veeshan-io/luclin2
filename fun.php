@@ -62,13 +62,14 @@ function raw($value): Foundation\CaseClass {
 
 /**
  * Create Match object
+ * @see php8已经提供了 match 关键字了，可能需要作废。
  *
  * @param iterable $context
  * @return Foundation\Match
  */
-function match(iterable $context = []): Foundation\Match {
-    return new Foundation\Match($context);
-}
+// function match(iterable $context = []): Foundation\Match {
+//     return new Foundation\Match($context);
+// }
 
 /**
  * 对一个目标连续执行多个团外
