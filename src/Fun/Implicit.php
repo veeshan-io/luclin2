@@ -1,6 +1,8 @@
 <?php
 
-namespace Luclin2\Foundation;
+namespace Luclin2\Fun;
+
+use Luclin2\Utilities\Dock;
 
 class Implicit
 {

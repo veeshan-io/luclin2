@@ -1,6 +1,6 @@
 <?php
 
-namespace Luclin2\Foundation;
+namespace Luclin2\Fun;
 
 class Match
 {

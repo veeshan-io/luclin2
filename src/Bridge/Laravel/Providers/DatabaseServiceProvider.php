@@ -2,7 +2,7 @@
 
 namespace Luclin2\Laravel\Providers;
 
-// use Luclin\Cabin\Foundation\ConnectionFactory;
+// use Luclin\Cabin\Fun\ConnectionFactory;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;

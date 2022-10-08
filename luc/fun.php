@@ -1,20 +1,22 @@
 <?php
 
-use Luclin2\Foundation;
+namespace luc;
+
+use Luclin2\Fun;
 
 /**
  * Create CaseClass object
  *
- * @param string | Foundation\CaseClass $type
+ * @param string | Fun\CaseClass $type
  * @param mixed $value
  * @param callable $func
- * @return Foundation\CaseClass
+ * @return Fun\CaseClass
  */
 function casing($type, $value = null,
-    callable $func = null): Foundation\CaseClass
+    callable $func = null): Fun\CaseClass
 {
-    if (is_string($type) && $type[0] == ':') return Foundation\CaseClass::by($type);
-    return new Foundation\CaseClass($type, $value, $func);
+    if (is_string($type) && $type[0] == ':') return Fun\CaseClass::by($type);
+    return new Fun\CaseClass($type, $value, $func);
 }
 
 /**
@@ -29,7 +31,7 @@ function casetype($var, $other = null)
         return casetype($var) === casetype($other);
     }
 
-    if ($var instanceof Foundation\CaseClass)
+    if ($var instanceof Fun\CaseClass)
         return $var->type;
     if (is_string($var))    return "string";
     if (is_numeric($var))   return "numeric";
@@ -45,19 +47,19 @@ function casetype($var, $other = null)
  * Create CaseClass object by raw type
  *
  * @param mixed $value
- * @return Foundation\CaseClass
+ * @return Fun\CaseClass
  */
-function raw($value): Foundation\CaseClass {
+function raw($value): Fun\CaseClass {
     $type = casetype($value);
 
     // dd($value);
-    if ($value instanceof Foundation\CaseClass) {
+    if ($value instanceof Fun\CaseClass) {
         $func  = $value->fun();
         $value = $value();
     } else {
         $func  = null;
     }
-    return new Foundation\CaseClass($type, $value, $func);
+    return new Fun\CaseClass($type, $value, $func);
 }
 
 /**
@@ -65,10 +67,10 @@ function raw($value): Foundation\CaseClass {
  * @see php8已经提供了 match 关键字了，可能需要作废。
  *
  * @param iterable $context
- * @return Foundation\Match
+ * @return Fun\Match
  */
-// function match(iterable $context = []): Foundation\Match {
-//     return new Foundation\Match($context);
+// function match(iterable $context = []): Fun\Match {
+//     return new Fun\Match($context);
 // }
 
 /**
@@ -92,10 +94,10 @@ function take(?iterable $funcs, $value, array $params = []) {
  * 隐式注入Case method
  *
  * @param string $type
- * @return Foundation\Implicit
+ * @return Fun\Implicit
  */
-function implicit(string $type): Foundation\Implicit {
-    return new Foundation\Implicit($type);
+function implicit(string $type): Fun\Implicit {
+    return new Fun\Implicit($type);
 }
 
 /**
@@ -109,7 +111,7 @@ function implicit(string $type): Foundation\Implicit {
 function thought(string $type, callable $func = null): callable {
     return (function($items) use ($type, $func) {
         $result = [];
-        $items instanceof Foundation\CaseClass && $items = $items();
+        $items instanceof Fun\CaseClass && $items = $items();
         foreach ($items as $key => $item) {
             $result = yield $key => casing($type, $item, $func);
         }
@@ -122,10 +124,10 @@ function thought(string $type, callable $func = null): callable {
  *
  * @param callable $func 处理函数
  * @param callable $handler 解析方法
- * @return Foundation\Functor
+ * @return Fun\Functor
  */
-function functor(callable $func, callable $handler = null): Foundation\Functor {
-    return new Foundation\Functor($func, $handler);
+function functor(callable $func, callable $handler = null): Fun\Functor {
+    return new Fun\Functor($func, $handler);
 }
 
 /**
@@ -138,7 +140,7 @@ function result(iterable $iterator, bool $autoUnpack = true): array {
     $result = [];
     foreach ($iterator as $key => $item) {
         $result[$key] = $autoUnpack ?
-            ($item instanceof Foundation\CaseClass ? $item() : $item) : $item;
+            ($item instanceof Fun\CaseClass ? $item() : $item) : $item;
     }
     return $result;
 }
@@ -148,8 +150,8 @@ function result(iterable $iterator, bool $autoUnpack = true): array {
  *
  * @param callable $func
  * @param mixed[] ...$params
- * @return Foundation\Currying
+ * @return Fun\Currying
  */
-function into(callable $func, ...$params): Foundation\Currying {
-    return new Foundation\Currying($func, $params);
+function into(callable $func, ...$params): Fun\Currying {
+    return new Fun\Currying($func, $params);
 }

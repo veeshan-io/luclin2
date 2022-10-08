@@ -1,12 +1,28 @@
 <?php
 
-namespace Luclin2\Foundation;
+namespace Luclin2\Utilities;
+
+use Luclin2\Foundation;
 
 class Dock
 {
-    use InstancableTrait;
+    use Foundation\InstancableTrait;
 
     private array $storage = [];
+
+    public function __callStatic() {
+
+    }
+
+    public function __set(string $name, $value)
+    {
+
+    }
+
+    public function __get(string $name)
+    {
+
+    }
 
     public function __call(string $name, array $arguments)
     {

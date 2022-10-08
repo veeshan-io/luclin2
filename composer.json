@@ -1,8 +1,8 @@
 {
     "name": "veeshan/luclin2",
     "description": "luclin2",
-    "keywords": ["framework", "laravel", "luclin"],
-    "type": "framework",
+    "keywords": ["framework", "library", "luclin"],
+    "type": "library",
     "license": "LGPL-3.0-only",
     "authors": [{
         "name": "Andares Merigold",
@@ -15,7 +15,16 @@
         }
     },
     "require": {
-        "php": "^8.0"
+        "php": "^8.1",
+        "ext-msgpack": "^2.1"
+      },
+    "require-dev": {
+        "fakerphp/faker": "^1.9",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.5"
+    },
+    "suggest": {
+      "ext-amqp": "RabbitMQ support."
     },
     "autoload": {
         "psr-4": {
@@ -24,17 +33,23 @@
         "files": [
             "luc/idgen.php",
             "luc/base.php",
-            "fun.php"
+            "luc/time.php",
+            "luc/fun.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Luclin2\\Laravel\\Providers\\AppServiceProvider",
-                "Luclin2\\Laravel\\Providers\\DatabaseServiceProvider"
+                "Luclin2\\Bridge\\Laravel\\Providers\\AppServiceProvider",
+                "Luclin2\\Bridge\\Laravel\\Providers\\DatabaseServiceProvider"
             ],
             "aliases": {
-                "Dock": "Luclin2\\Foundation\\Dock"
+                "Dock": "Luclin2\\Utilities\\Dock"
             }
         }
     }
